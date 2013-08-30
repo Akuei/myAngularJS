@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html ng-app>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>【AngularJS實作】KO範例28 - 轉換對象(排除自己)之下拉選單連動</title>
+    <link href="../../3rdParty/Bootstrap/3.0.0/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../3rdParty/Bootstrap/3.0.0/bootstrap-theme.min.css" rel="stylesheet" />
+    <script src="../../3rdParty/jQuery/1.10.2/jquery-1.10.2.min.js"></script>
+    <script src="../../3rdParty/Bootstrap/3.0.0/bootstrap.min.js"></script>
+    <script src="../../3rdParty/AngularJS/1.0.7/angular.min.js"></script>
+    <script>
+        function BodyCtrl($scope, $filter) {
+            $scope.ary_from = [
+                { v: "TWD", t: "台幣" },
+                { v: "USD", t: "美金" },
+                { v: "EUR", t: "歐元" },
+                { v: "JPY", t: "日幣" },
+                { v: "HKD", t: "港幣" }
+            ];
+            $scope.ary_to = [];
+
+            $scope.from = $scope.ary_from[0];
+            $scope.to = $scope.ary_from[1];
+
+            $scope.filter_to = function () {
+                $scope.ary_to = $filter('filter')($scope.ary_from, function (item) {
+                    return (item != $scope.from);
+                });
+                if ($scope.to === $scope.from)
+                    $scope.to = $scope.ary_to[0];
+            };
+            $scope.filter_to();
+        }
+    </script>
+</head>
+<body ng-controller="BodyCtrl" style="margin: 10px;">
+    <div class="page-header">
+        <h1>【AngularJS實作】KO範例28 - 轉換對象(排除自己)之下拉選單連動
+            <small><a href="http://blog.darkthread.net/post-2013-08-30-kolab28.aspx">黑大原始KO範例</a></small></h1>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            
+            <div class="panel panel-primary">
+                <div class="panel-heading">Demo</div>
+                <div class="panel-body">
+                    From: 
+                    <select ng-model="from" ng-options="i.t for i in ary_from" ng-change="filter_to()"></select>
+                    &nbsp; &nbsp; &nbsp; 
+                    To:
+                    <select ng-model="to" ng-options="i.t for i in ary_to"></select>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-6">
+            
+            <div class="panel panel-default">
+                <div class="panel-heading">說明</div>
+                <div class="panel-body">
+                    <ul>
+                        <li>From = <code>來源幣別</code></li>
+                        <li>To = <code>目標幣別</code></li>
+                        <li><code>來源幣別</code>和<code>目標幣別</code>不能一樣</li>
+                        <li>當<code>來源幣別</code>選擇同<code>目標幣別</code>時，<code>目標幣別</code>會跳為預設第一個，否則不變</li>
+                    </ul>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
